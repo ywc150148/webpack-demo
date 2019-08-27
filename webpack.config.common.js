@@ -97,7 +97,7 @@ module.exports = {
         new HtmlWebpackPlugin({ // 打包生成HTML
             template: './page/index.html', // 要打包的文件
             filename: './index.html', // 生成的文件名
-            chunks: ['styles','vendor','common','manifest','index'], // 用于多页面，当有多个入口(entry)文件，选择要使用的js自动添加到生成的html中
+            chunks: ['styles','vendors','common','manifest','index'], // 用于多页面，当有多个入口(entry)文件，选择要使用的js自动添加到生成的html中
             minify: {
                 //是否对大小写敏感，默认false
                 caseSensitive: true,
@@ -148,7 +148,7 @@ module.exports = {
         new HtmlWebpackPlugin({ // 打包生成HTML
             template: './page/about.html', // 要打包的文件
             filename: './about.html', // 生成的文件名
-            chunks: ['styles','vendor','common','manifest','about'], // 用于多页面，当有多个入口(entry)文件，选择要使用的js自动添加到生成的html中
+            chunks: ['styles','vendors','common','manifest','about'], // 用于多页面，当有多个入口(entry)文件，选择要使用的js自动添加到生成的html中
             minify: {
                 //是否对大小写敏感，默认false
                 caseSensitive: true,
