@@ -1,3 +1,6 @@
+# "webpack": "^4.39.2",
+# "webpack-cli": "^3.3.7",
+
 # 此文档是学习笔记，部分内容是前期配置记录，不需要理会，分割线后面的是使用备注
 
 # 1、全局安装
@@ -79,6 +82,7 @@ www.a.com/demo  即 '/demo/'
 ---------------------------------
 git init 
 git add .
+git status
 git commit -m "first commit"
 git remote add origin https://github.com/ywc150148/webpack-demo.git
 git push -u origin master
