@@ -91,7 +91,7 @@ module.exports = {
         new CleanWebpackPlugin(), // 清理dist文件夹
         // 不处理static目录，直接拷贝到输出目录 打包到dist中，static里的文件只是复制一遍而已
         new CopyWebpackPlugin([{
-            from:path.join(__dirname,'/src/static'),
+            from:path.join(__dirname,'/static'),
             to: 'static'
         }]),
         new HtmlWebpackPlugin({ // 打包生成HTML
