@@ -14,11 +14,58 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ENV_NODE = process.env.ENV_NODE;
 console.log('[webpack.config.common.js]：当前环境是', process.env.NODE_ENV)
 
+const minifyObj = {
+    //是否对大小写敏感，默认false
+    caseSensitive: true,
+
+    //是否简写boolean格式的属性如：disabled="disabled" 简写为disabled  默认false
+    collapseBooleanAttributes: true,
+
+    //是否去除空格，默认false
+    collapseWhitespace: true,
+
+    //是否压缩html里的css（使用clean-css进行的压缩） 默认值false；
+    minifyCSS: true,
+
+    //是否压缩html里的js（使用uglify-js进行的压缩）
+    minifyJS: true,
+
+    //Prevents the escaping of the values of attributes
+    preventAttributesEscaping: true,
+
+    //是否移除属性的引号 默认false
+    removeAttributeQuotes: true,
+
+    //是否移除注释 默认false
+    removeComments: true,
+
+    //从脚本和样式删除的注释 默认false
+    removeCommentsFromCDATA: true,
+
+    //是否删除空属性，默认false
+    removeEmptyAttributes: true,
+
+    // 若开启此项，生成的html中没有 body 和 head，html也未闭合
+    removeOptionalTags: false,
+
+    //删除多余的属性
+    removeRedundantAttributes: true,
+
+    //删除script的类型属性，在h5下面script的type默认值：text/javascript 默认值false
+    removeScriptTypeAttributes: true,
+
+    //删除style的类型属性， type="text/css" 同上
+    removeStyleLinkTypeAttributes: true,
+
+    //使用短的文档类型，默认false
+    useShortDoctype: true,
+}
+
 module.exports = {
     mode: ENV_NODE, // 设置环境 生产环境 production || 开发环境 development
     entry: { // 入口文件
-        index: './src/assets/js/index.js',
-        about: './src/assets/js/about.js',
+        "js/index": './src/assets/js/index.js',
+        "js/about": './src/assets/js/about.js',
     },
     output: { // 出口配置
         // 入口文件名称 hash contenthash chunkhash
@@ -26,15 +73,15 @@ module.exports = {
         // 非入口chunk文件（比如动态加载的文件）名称
         chunkFilename: ENV_NODE === 'production' ? '[name].[chunkhash:7].js' : '[name].[hash:7].js',
         // 输出文件夹
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, './dist'), // path.resolve(__dirname, 'dist')
         publicPath: '/' // 公共路径 
     },
     module: {
         rules: [{
                 test: /\.(jsx|js)$/,
-                use: {
+                use: [{
                     loader: 'babel-loader'
-                },
+                }],
                 exclude: /node_modules/ // 排除此文件，不处理此文件内容
             }, {
                 test: /\.(css|scss|sass)$/,
@@ -81,120 +128,40 @@ module.exports = {
                     loader: 'html-withimg-loader'
                 }]
             },
+            // 开发环境不要用
+            // {
+            //     test: /\.(js)$/,
+            //     use: [{
+            //         loader: 'file-loader',
+            //         options: {
+            //             outputPath: 'js/' // 打包路径
+            //         }
+            //     }]
+            // },
         ]
     },
     plugins: [ // 插件
         // 创建环境变量 可以在开发中获取此处创建的环境变量来使用 （package.json中设置）
         new webpack.DefinePlugin({
             "NODE_ENV": JSON.stringify(process.env.NODE_ENV),
-        }), 
+        }),
         new CleanWebpackPlugin(), // 清理dist文件夹
         // 不处理static目录，直接拷贝到输出目录 打包到dist中，static里的文件只是复制一遍而已
         new CopyWebpackPlugin([{
-            from:path.join(__dirname,'/static'),
+            from: path.join(__dirname, '/static'),
             to: 'static'
         }]),
         new HtmlWebpackPlugin({ // 打包生成HTML
             template: './page/index.html', // 要打包的文件
             filename: './index.html', // 生成的文件名
-            chunks: ['styles','vendors','common','manifest','index'], // 用于多页面，当有多个入口(entry)文件，选择要使用的js自动添加到生成的html中
-            minify: {
-                //是否对大小写敏感，默认false
-                caseSensitive: true,
-
-                //是否简写boolean格式的属性如：disabled="disabled" 简写为disabled  默认false
-                collapseBooleanAttributes: true,
-
-                //是否去除空格，默认false
-                collapseWhitespace: true,
-
-                //是否压缩html里的css（使用clean-css进行的压缩） 默认值false；
-                minifyCSS: true,
-
-                //是否压缩html里的js（使用uglify-js进行的压缩）
-                minifyJS: true,
-
-                //Prevents the escaping of the values of attributes
-                preventAttributesEscaping: true,
-
-                //是否移除属性的引号 默认false
-                removeAttributeQuotes: true,
-
-                //是否移除注释 默认false
-                removeComments: true,
-
-                //从脚本和样式删除的注释 默认false
-                removeCommentsFromCDATA: true,
-
-                //是否删除空属性，默认false
-                removeEmptyAttributes: true,
-
-                // 若开启此项，生成的html中没有 body 和 head，html也未闭合
-                removeOptionalTags: false,
-
-                //删除多余的属性
-                removeRedundantAttributes: true,
-
-                //删除script的类型属性，在h5下面script的type默认值：text/javascript 默认值false
-                removeScriptTypeAttributes: true,
-
-                //删除style的类型属性， type="text/css" 同上
-                removeStyleLinkTypeAttributes: true,
-
-                //使用短的文档类型，默认false
-                useShortDoctype: true,
-            },
+            chunks: ['styles', 'vendors', 'common', 'manifest', 'index'], // 用于多页面，当有多个入口(entry)文件，选择要使用的js自动添加到生成的html中
+            minify: minifyObj,
         }),
         new HtmlWebpackPlugin({ // 打包生成HTML
             template: './page/about.html', // 要打包的文件
             filename: './about.html', // 生成的文件名
-            chunks: ['styles','vendors','common','manifest','about'], // 用于多页面，当有多个入口(entry)文件，选择要使用的js自动添加到生成的html中
-            minify: {
-                //是否对大小写敏感，默认false
-                caseSensitive: true,
-
-                //是否简写boolean格式的属性如：disabled="disabled" 简写为disabled  默认false
-                collapseBooleanAttributes: true,
-
-                //是否去除空格，默认false
-                collapseWhitespace: true,
-
-                //是否压缩html里的css（使用clean-css进行的压缩） 默认值false；
-                minifyCSS: true,
-
-                //是否压缩html里的js（使用uglify-js进行的压缩）
-                minifyJS: true,
-
-                //Prevents the escaping of the values of attributes
-                preventAttributesEscaping: true,
-
-                //是否移除属性的引号 默认false
-                removeAttributeQuotes: true,
-
-                //是否移除注释 默认false
-                removeComments: true,
-
-                //从脚本和样式删除的注释 默认false
-                removeCommentsFromCDATA: true,
-
-                //是否删除空属性，默认false
-                removeEmptyAttributes: true,
-
-                // 若开启此项，生成的html中没有 body 和 head，html也未闭合
-                removeOptionalTags: false,
-
-                //删除多余的属性
-                removeRedundantAttributes: true,
-
-                //删除script的类型属性，在h5下面script的type默认值：text/javascript 默认值false
-                removeScriptTypeAttributes: true,
-
-                //删除style的类型属性， type="text/css" 同上
-                removeStyleLinkTypeAttributes: true,
-
-                //使用短的文档类型，默认false
-                useShortDoctype: true,
-            },
+            chunks: ['styles', 'vendors', 'common', 'manifest', 'about'], // 用于多页面，当有多个入口(entry)文件，选择要使用的js自动添加到生成的html中
+            minify: minifyObj,
         })
     ]
 }

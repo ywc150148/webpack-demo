@@ -32,7 +32,7 @@ const config = {
             maxInitialRequests: 3,
             // 抽取出来的文件的自动生成名字的分隔符，默认~
             automaticNameDelimiter: '~',
-            // 抽取出来的文件名字，默认truw，表示自动生成文件名
+            // 抽取出来的文件名字，默认true，表示自动生成文件名
             name: true,
             // 
             cacheGroups: {
@@ -49,13 +49,13 @@ const config = {
                 vendors: {
                     test: /[\\/]node_modules[\\/]/,
                     chunks: 'initial',
-                    name: 'vendors',
+                    name: 'js/vendors',
                     priority: 10,
                     enforce: true
                 },
                 // 把所有引入超过1次的模块抽取为common
                 common: {
-                    name: 'common',
+                    name: 'js/common',
                     chunks: 'initial',
                     priority: 2,
                     minChunks: 2,
@@ -65,7 +65,7 @@ const config = {
         },
         // 提取manifest，管理模块之间交互
         runtimeChunk: {
-            name: "manifest"
+            name: "js/manifest"
         },
         minimizer:[
             // 压缩js 这是一款基于Babel的压缩工具，支持es6的特性，取代UglifyJS
