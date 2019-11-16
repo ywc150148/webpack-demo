@@ -64,8 +64,8 @@ const minifyObj = {
 module.exports = {
     mode: ENV_NODE, // 设置环境 生产环境 production || 开发环境 development
     entry: { // 入口文件
-        "js/index": './src/assets/js/index.js',
-        "js/about": './src/assets/js/about.js',
+        "index": './src/assets/js/index.js',
+        "about": './src/assets/js/about.js',
     },
     output: { // 出口配置
         // 入口文件名称 hash contenthash chunkhash

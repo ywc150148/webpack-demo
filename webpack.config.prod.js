@@ -49,13 +49,13 @@ const config = {
                 vendors: {
                     test: /[\\/]node_modules[\\/]/,
                     chunks: 'initial',
-                    name: 'js/vendors',
+                    name: 'vendors',
                     priority: 10,
                     enforce: true
                 },
                 // 把所有引入超过1次的模块抽取为common
                 common: {
-                    name: 'js/common',
+                    name: 'common',
                     chunks: 'initial',
                     priority: 2,
                     minChunks: 2,
@@ -65,7 +65,7 @@ const config = {
         },
         // 提取manifest，管理模块之间交互
         runtimeChunk: {
-            name: "js/manifest"
+            name: "manifest"
         },
         minimizer:[
             // 压缩js 这是一款基于Babel的压缩工具，支持es6的特性，取代UglifyJS
