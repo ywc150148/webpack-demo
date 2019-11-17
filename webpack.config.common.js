@@ -11,8 +11,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const ENV_NODE = process.env.ENV_NODE;
-console.log('[webpack.config.common.js]：当前环境是', process.env.NODE_ENV)
+const ENV_NODE = process.env.NODE_ENV;
+// console.log('[webpack.config.common.js]：当前环境是', process.env.NODE_ENV)
 
 const minifyObj = {
     //是否对大小写敏感，默认false
@@ -66,15 +66,21 @@ module.exports = {
     entry: { // 入口文件
         "index": './src/assets/js/index.js',
         "about": './src/assets/js/about.js',
+        "test": './src/assets/js/test.js',
+        "login": './src/assets/js/login.js',
     },
     output: { // 出口配置
         // 入口文件名称 hash contenthash chunkhash
-        filename: ENV_NODE === 'production' ? '[name].[contenthash:7].js' : '[name].[hash:7].js',
+        filename: ENV_NODE === 'production' ? 'js/[name].[contenthash:7].js' : 'js/[name].[hash:7].js',
         // 非入口chunk文件（比如动态加载的文件）名称
-        chunkFilename: ENV_NODE === 'production' ? '[name].[chunkhash:7].js' : '[name].[hash:7].js',
+        chunkFilename: ENV_NODE === 'production' ? 'js/[name].[chunkhash:7].js' : 'js/[name].[hash:7].js',
         // 输出文件夹
-        path: path.resolve(__dirname, './dist'), // path.resolve(__dirname, 'dist')
-        publicPath: '/' // 公共路径 
+        path: path.resolve(__dirname, 'dist'), // path.resolve(__dirname, 'dist')
+        publicPath: '/', // 公共路径 
+        libraryTarget: "umd"
+    },
+    externals: {
+        jquery: "jQuery",
     },
     module: {
         rules: [{
@@ -107,7 +113,7 @@ module.exports = {
                     options: {
                         limit: 1024 * 10, // 10k以内的图片转base64打包到js中
                         name: '[name].[hash:7].[ext]', // 打包文件名
-                        outputPath: 'images/' // 打包路径
+                        outputPath: 'images' // 打包路径
                     }
                 }]
             },
@@ -118,26 +124,21 @@ module.exports = {
                     options: {
                         limit: 1024 * 10, // 10k以内的图片转base64打包到js中
                         name: '[name].[hash:7].[ext]', // 打包文件名
-                        outputPath: 'font/' // 打包路径
+                        outputPath: 'font' // 打包路径
                     }
                 }]
             },
             {
                 test: /\.(htm|html)$/,
-                use: [{
-                    loader: 'html-withimg-loader'
-                }]
+                use: {
+                    loader: 'html-withimg-loader',
+                }
             },
-            // 开发环境不要用
-            // {
-            //     test: /\.(js)$/,
-            //     use: [{
-            //         loader: 'file-loader',
-            //         options: {
-            //             outputPath: 'js/' // 打包路径
-            //         }
-            //     }]
-            // },
+            {
+                // 对模版文件使用loader
+                test: /\.(ejs|tpl)$/,
+                use: 'ejs-loader'
+            }
         ]
     },
     plugins: [ // 插件
@@ -158,10 +159,11 @@ module.exports = {
             minify: minifyObj,
         }),
         new HtmlWebpackPlugin({ // 打包生成HTML
-            template: './page/about.html', // 要打包的文件
+            template: './src/views/about/about.js', // 要打包的文件
             filename: './about.html', // 生成的文件名
+            title:"about000000",
             chunks: ['styles', 'vendors', 'common', 'manifest', 'about'], // 用于多页面，当有多个入口(entry)文件，选择要使用的js自动添加到生成的html中
             minify: minifyObj,
-        })
+        }),
     ]
 }

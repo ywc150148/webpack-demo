@@ -25,7 +25,9 @@
     "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.0",
     "css-loader": "^3.2.0",
+    "ejs-loader": "^0.3.5",
     "file-loader": "^4.2.0",
+    "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "less": "^3.10.2",
     "less-loader": "^5.0.0",
@@ -44,8 +46,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "html-withimg-loader": "^0.1.16",
-    "jquery": "^3.4.1"
+    "html-withimg-loader": "^0.1.16"
   },
   "main": "babel.config.js"
 }

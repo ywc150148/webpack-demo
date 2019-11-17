@@ -22,6 +22,14 @@
                     <i class="iconfont iconguanyu"></i>
                     <span>关于</span>
                 </a>
+                <!-- <a href="/test.html">
+                    <i class="iconfont iconguanyu"></i>
+                    <span>测试</span>
+                </a>
+                <a href="/login.html">
+                    <i class="iconfont iconguanyu"></i>
+                    <span>登录</span>
+                </a> -->
             </div>
         </div>
 
@@ -32,11 +40,21 @@
             <img class="webpack-img" src="../src/assets/img/webpack.png" alt="">
             <h1>让一切变得简单</h1>
             <p id="content-note"></p>
+
+            <hr>
+            <p>2019/11/17 更新一些内容，使用ejs语句编写组件，组装模板输出html。</p>
+            <p>未完成，继续更新中...</p>
         </div>
     </div>
-
+    <div id="hello" style="display:none;text-align:center;background-color:#999;">
+    </div>
+    <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="../static/tools/index.js"></script>
     <script>
-   
+        $(document).ready(function () {
+            $("#hello").fadeIn(1000);
+        });
+        say("这里是../static/tools/index.js打印的")
     </script>
 </body>
 
